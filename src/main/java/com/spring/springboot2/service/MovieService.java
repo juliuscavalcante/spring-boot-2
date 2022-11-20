@@ -6,12 +6,19 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 @Service
 public class MovieService {
 
-    private List<Movie> movies = List.of(new Movie(1L,"The Dark Knight"), new Movie(2L,"The Prestige"));
+    private static List<Movie> movies;
+
+    static {
+        movies = new ArrayList<>(List.of(new Movie(1L,"The Dark Knight"), new Movie(2L,"The Prestige")));
+
+    }
 
     //private final MovieRepository movieRepository;
 
@@ -24,5 +31,11 @@ public class MovieService {
                 .filter(movie -> movie.getId().equals(id))
                 .findFirst()
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Movie id not found"));
+    }
+
+    public Movie save(Movie movie) {
+        movie.setId(ThreadLocalRandom.current().nextLong(3,100000));
+        movies.add(movie);
+        return movie;
     }
 }
