@@ -5,7 +5,6 @@ import com.spring.springboot2.service.MovieService;
 import com.spring.springboot2.util.DateUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -36,5 +35,17 @@ public class MovieController {
     @PostMapping
     public ResponseEntity<Movie> save(@RequestBody Movie movie) {
         return new ResponseEntity<>(movieService.save(movie), HttpStatus.CREATED);
+    }
+
+    @DeleteMapping(path = "/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        movieService.delete(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @PutMapping
+    public ResponseEntity<Void> replace(@RequestBody Movie movie) {
+        movieService.replace(movie);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
