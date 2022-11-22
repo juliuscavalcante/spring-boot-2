@@ -1,6 +1,7 @@
 package com.spring.springboot2.service;
 
 import com.spring.springboot2.domain.Movie;
+import com.spring.springboot2.mapper.MovieMapper;
 import com.spring.springboot2.repository.MovieRepository;
 import com.spring.springboot2.requests.MoviePostRequestBody;
 import com.spring.springboot2.requests.MoviePutRequestBody;
@@ -27,7 +28,7 @@ public class MovieService {
     }
 
     public Movie save(MoviePostRequestBody moviePostRequestBody) {
-        return movieRepository.save(Movie.builder().name(moviePostRequestBody.getName()).build());
+        return movieRepository.save(MovieMapper.INSTANCE.toMovie(moviePostRequestBody));
     }
 
     public void delete(Long id) {
@@ -36,10 +37,8 @@ public class MovieService {
 
     public void replace(MoviePutRequestBody moviePutRequestBody) {
         Movie savedMovie = findByIdOrThrowBadRequestException(moviePutRequestBody.getId());
-        Movie movie = Movie.builder()
-                .id(savedMovie.getId())
-                .name(moviePutRequestBody.getName())
-                .build();
+        Movie movie = MovieMapper.INSTANCE.toMovie(moviePutRequestBody);
+        movie.setId(savedMovie.getId());
         movieRepository.save(movie);
     }
 }
