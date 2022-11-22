@@ -2,49 +2,44 @@ package com.spring.springboot2.service;
 
 import com.spring.springboot2.domain.Movie;
 import com.spring.springboot2.repository.MovieRepository;
+import com.spring.springboot2.requests.MoviePostRequestBody;
+import com.spring.springboot2.requests.MoviePutRequestBody;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ThreadLocalRandom;
 
 @Service
+@RequiredArgsConstructor
 public class MovieService {
 
-    private static List<Movie> movies;
-
-    static {
-        movies = new ArrayList<>(List.of(new Movie(1L,"The Dark Knight"), new Movie(2L,"The Prestige")));
-
-    }
-
-    //private final MovieRepository movieRepository;
+    private final MovieRepository movieRepository;
 
     public List<Movie> findAll() {
-        return movies;
+        return movieRepository.findAll();
     }
 
-    public Movie findById(Long id) {
-        return movies.stream()
-                .filter(movie -> movie.getId().equals(id))
-                .findFirst()
+    public Movie findByIdOrThrowBadRequestException(Long id) {
+        return movieRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Movie id not found"));
     }
 
-    public Movie save(Movie movie) {
-        movie.setId(ThreadLocalRandom.current().nextLong(3,100000));
-        movies.add(movie);
-        return movie;
+    public Movie save(MoviePostRequestBody moviePostRequestBody) {
+        return movieRepository.save(Movie.builder().name(moviePostRequestBody.getName()).build());
     }
 
     public void delete(Long id) {
-        movies.remove(findById(id));
+        movieRepository.delete(findByIdOrThrowBadRequestException(id));
     }
 
-    public void replace(Movie movie) {
-        delete(movie.getId());
-        movies.add(movie);
+    public void replace(MoviePutRequestBody moviePutRequestBody) {
+        Movie savedMovie = findByIdOrThrowBadRequestException(moviePutRequestBody.getId());
+        Movie movie = Movie.builder()
+                .id(savedMovie.getId())
+                .name(moviePutRequestBody.getName())
+                .build();
+        movieRepository.save(movie);
     }
 }

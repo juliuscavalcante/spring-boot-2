@@ -1,6 +1,8 @@
 package com.spring.springboot2.controller;
 
 import com.spring.springboot2.domain.Movie;
+import com.spring.springboot2.requests.MoviePostRequestBody;
+import com.spring.springboot2.requests.MoviePutRequestBody;
 import com.spring.springboot2.service.MovieService;
 import com.spring.springboot2.util.DateUtil;
 import lombok.RequiredArgsConstructor;
@@ -29,11 +31,11 @@ public class MovieController {
 
     @GetMapping(path = "/{id}")
     public ResponseEntity<Movie> findById(@PathVariable Long id) {
-        return ResponseEntity.ok(movieService.findById(id));
+        return ResponseEntity.ok(movieService.findByIdOrThrowBadRequestException(id));
     }
 
     @PostMapping
-    public ResponseEntity<Movie> save(@RequestBody Movie movie) {
+    public ResponseEntity<Movie> save(@RequestBody MoviePostRequestBody movie) {
         return new ResponseEntity<>(movieService.save(movie), HttpStatus.CREATED);
     }
 
@@ -44,8 +46,8 @@ public class MovieController {
     }
 
     @PutMapping
-    public ResponseEntity<Void> replace(@RequestBody Movie movie) {
-        movieService.replace(movie);
+    public ResponseEntity<Void> replace(@RequestBody MoviePutRequestBody moviePutRequestBody) {
+        movieService.replace(moviePutRequestBody);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
