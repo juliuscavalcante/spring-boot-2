@@ -1,6 +1,7 @@
 package com.spring.springboot2.service;
 
 import com.spring.springboot2.domain.Movie;
+import com.spring.springboot2.exception.BadRequestException;
 import com.spring.springboot2.mapper.MovieMapper;
 import com.spring.springboot2.repository.MovieRepository;
 import com.spring.springboot2.requests.MoviePostRequestBody;
@@ -28,7 +29,7 @@ public class MovieService {
 
     public Movie findByIdOrThrowBadRequestException(Long id) {
         return movieRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Movie id not found"));
+                .orElseThrow(() -> new BadRequestException("Movie id not found"));
     }
 
     public Movie save(MoviePostRequestBody moviePostRequestBody) {
