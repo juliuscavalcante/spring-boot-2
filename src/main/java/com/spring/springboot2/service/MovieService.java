@@ -7,9 +7,8 @@ import com.spring.springboot2.repository.MovieRepository;
 import com.spring.springboot2.requests.MoviePostRequestBody;
 import com.spring.springboot2.requests.MoviePutRequestBody;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -32,6 +31,7 @@ public class MovieService {
                 .orElseThrow(() -> new BadRequestException("Movie id not found"));
     }
 
+    @Transactional
     public Movie save(MoviePostRequestBody moviePostRequestBody) {
         return movieRepository.save(MovieMapper.INSTANCE.toMovie(moviePostRequestBody));
     }
