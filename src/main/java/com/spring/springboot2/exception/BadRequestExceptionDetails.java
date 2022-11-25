@@ -1,13 +1,13 @@
 package com.spring.springboot2.exception;
 
-import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
+import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDateTime;
 
-@Data
-@Builder
-public class BadRequestExceptionDetails {
+@Getter
+@SuperBuilder
+public class BadRequestExceptionDetails extends ExceptionDetails {
 
     private String title;
     private Integer status;
