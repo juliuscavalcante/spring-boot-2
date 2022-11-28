@@ -7,6 +7,8 @@ import com.spring.springboot2.repository.MovieRepository;
 import com.spring.springboot2.requests.MoviePostRequestBody;
 import com.spring.springboot2.requests.MoviePutRequestBody;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,8 +20,8 @@ public class MovieService {
 
     private final MovieRepository movieRepository;
 
-    public List<Movie> findAll() {
-        return movieRepository.findAll();
+    public Page<Movie> findAll(Pageable pageable) {
+        return movieRepository.findAll(pageable);
     }
 
     public List<Movie> findByName(String name) {

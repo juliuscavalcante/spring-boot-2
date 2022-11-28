@@ -7,6 +7,8 @@ import com.spring.springboot2.service.MovieService;
 import com.spring.springboot2.util.DateUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,9 +27,9 @@ public class MovieController {
     private final MovieService movieService;
 
     @GetMapping
-    public ResponseEntity<List<Movie>> findAll() {
+    public ResponseEntity<Page<Movie>> findAll(Pageable pageable) {
         log.info(dateUtil.formatLocalDateTimeToDatebaseStyle(LocalDateTime.now()));
-        return ResponseEntity.ok(movieService.findAll());
+        return ResponseEntity.ok(movieService.findAll(pageable));
     }
 
     @GetMapping(path = "/{id}")
