@@ -32,6 +32,12 @@ public class MovieController {
         return ResponseEntity.ok(movieService.findAll(pageable));
     }
 
+    @GetMapping(path = "/all")
+    public ResponseEntity<List<Movie>> listAll() {
+        log.info(dateUtil.formatLocalDateTimeToDatebaseStyle(LocalDateTime.now()));
+        return ResponseEntity.ok(movieService.listAllNonPageable());
+    }
+
     @GetMapping(path = "/{id}")
     public ResponseEntity<Movie> findById(@PathVariable Long id) {
         return ResponseEntity.ok(movieService.findByIdOrThrowBadRequestException(id));

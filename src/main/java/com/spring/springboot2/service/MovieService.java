@@ -24,6 +24,10 @@ public class MovieService {
         return movieRepository.findAll(pageable);
     }
 
+    public List<Movie> listAllNonPageable() {
+        return movieRepository.findAll();
+    }
+
     public List<Movie> findByName(String name) {
         return movieRepository.findByName(name);
     }
