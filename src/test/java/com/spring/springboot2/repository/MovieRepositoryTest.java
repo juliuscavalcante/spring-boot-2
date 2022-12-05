@@ -1,17 +1,15 @@
 package com.spring.springboot2.repository;
 
 import com.spring.springboot2.domain.Movie;
-import lombok.extern.log4j.Log4j2;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-
+import javax.validation.ConstraintViolationException;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
 @DisplayName("Tests for Movie Repository")
@@ -72,6 +70,15 @@ class MovieRepositoryTest {
 
         List<Movie> movies = this.movieRepository.findByName("Memento");
         Assertions.assertThat(movies).isEmpty();
+    }
+
+    @Test
+    @DisplayName("Save throws ConstraintViolationException when name is empty")
+    void save_ThrowsConstraintViolationException_WhenNameIsEmpty() {
+
+        Movie movie = new Movie();
+        Assertions.assertThatThrownBy(() -> this.movieRepository.save(movie))
+                .isInstanceOf(ConstraintViolationException.class);
     }
 
     private Movie createMovie() {
