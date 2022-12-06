@@ -1,6 +1,7 @@
 package com.spring.springboot2.repository;
 
 import com.spring.springboot2.domain.Movie;
+import com.spring.springboot2.util.MovieCreator;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -22,7 +23,7 @@ class MovieRepositoryTest {
     @DisplayName("Save persists movie when successful")
     void save_PersistMovie_WhenSuccessful() {
 
-        Movie movieToBeSaved = createMovie();
+        Movie movieToBeSaved = MovieCreator.createMovieToBeSaved();
         Movie movieSaved = this.movieRepository.save(movieToBeSaved);
         Assertions.assertThat(movieSaved).isNotNull();
         Assertions.assertThat(movieSaved.getId()).isNotNull();
@@ -33,7 +34,7 @@ class MovieRepositoryTest {
     @DisplayName("Save updates movie when successful")
     void save_UpdatesMovie_WhenSuccessful() {
 
-        Movie movieToBeSaved = createMovie();
+        Movie movieToBeSaved = MovieCreator.createMovieToBeSaved();
         Movie movieSaved = this.movieRepository.save(movieToBeSaved);
         movieSaved.setName("Interstellar");
         Movie movieUpdated = this.movieRepository.save(movieSaved);
@@ -46,7 +47,7 @@ class MovieRepositoryTest {
     @DisplayName("Delete removes movie when successful")
     void delete_RemovesMovie_WhenSuccessful() {
 
-        Movie movieToBeSaved = createMovie();
+        Movie movieToBeSaved = MovieCreator.createMovieToBeSaved();
         Movie movieSaved = this.movieRepository.save(movieToBeSaved);
         this.movieRepository.delete(movieSaved);
         Optional<Movie> movieOptional = this.movieRepository.findById(movieSaved.getId());
@@ -57,7 +58,7 @@ class MovieRepositoryTest {
     @DisplayName("Find by name returns list of movie when successful")
     void findByName_ReturnsListOfMovie_WhenSuccessful() {
 
-        Movie movieToBeSaved = createMovie();
+        Movie movieToBeSaved = MovieCreator.createMovieToBeSaved();
         Movie movieSaved = this.movieRepository.save(movieToBeSaved);
         String name = movieSaved.getName();
         List<Movie> movies = this.movieRepository.findByName(name);
@@ -79,11 +80,5 @@ class MovieRepositoryTest {
         Movie movie = new Movie();
         Assertions.assertThatThrownBy(() -> this.movieRepository.save(movie))
                 .isInstanceOf(ConstraintViolationException.class);
-    }
-
-    private Movie createMovie() {
-        return Movie.builder()
-                .name("Dunkirk")
-                .build();
     }
 }
