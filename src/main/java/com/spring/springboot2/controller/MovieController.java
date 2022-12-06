@@ -23,18 +23,15 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MovieController {
 
-    private final DateUtil dateUtil;
     private final MovieService movieService;
 
     @GetMapping
-    public ResponseEntity<Page<Movie>> findAll(Pageable pageable) {
-        log.info(dateUtil.formatLocalDateTimeToDatebaseStyle(LocalDateTime.now()));
-        return ResponseEntity.ok(movieService.findAll(pageable));
+    public ResponseEntity<Page<Movie>> list(Pageable pageable) {
+        return ResponseEntity.ok(movieService.listAll(pageable));
     }
 
     @GetMapping(path = "/all")
     public ResponseEntity<List<Movie>> listAll() {
-        log.info(dateUtil.formatLocalDateTimeToDatebaseStyle(LocalDateTime.now()));
         return ResponseEntity.ok(movieService.listAllNonPageable());
     }
 

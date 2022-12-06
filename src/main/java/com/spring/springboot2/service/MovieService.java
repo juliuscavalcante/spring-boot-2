@@ -20,7 +20,7 @@ public class MovieService {
 
     private final MovieRepository movieRepository;
 
-    public Page<Movie> findAll(Pageable pageable) {
+    public Page<Movie> listAll(Pageable pageable) {
         return movieRepository.findAll(pageable);
     }
 
