@@ -43,6 +43,13 @@ public class MovieController {
         return ResponseEntity.ok(movieService.findByIdOrThrowBadRequestException(id));
     }
 
+    @GetMapping(path = "/by-id/{id}")
+    public ResponseEntity<Movie> findByIdAuthenticationPrincipal(@PathVariable Long id,
+                                                                 @AuthenticationPrincipal UserDetails userDetails) {
+        log.info(userDetails);
+        return ResponseEntity.ok(movieService.findByIdOrThrowBadRequestException(id));
+    }
+
     @GetMapping(path = "/find")
     public ResponseEntity<List<Movie>> findByName(@RequestParam String name) {
         return ResponseEntity.ok(movieService.findByName(name));
