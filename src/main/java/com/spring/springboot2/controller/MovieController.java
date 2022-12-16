@@ -44,6 +44,7 @@ public class MovieController {
     }
 
     @GetMapping(path = "/by-id/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Movie> findByIdAuthenticationPrincipal(@PathVariable Long id,
                                                                  @AuthenticationPrincipal UserDetails userDetails) {
         log.info(userDetails);
