@@ -26,7 +26,7 @@ public class SpringUser implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "Movie name can't be empty or null")
+    @NotBlank(message = "The user's name can't be empty or null")
     private String name;
 
     private String username;
