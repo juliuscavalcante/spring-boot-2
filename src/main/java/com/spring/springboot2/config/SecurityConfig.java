@@ -18,13 +18,15 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @SuppressWarnings("java:S5344")
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private final SpringUserDetailsService userDetailsService;
+    private final SpringUserDetailsService springUserDetailsService;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
-        //       csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()).and()
+    //          .csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
                 .authorizeRequests()
+                .antMatchers("/movies/admin/**").hasRole("ADMIN")
+                .antMatchers("/movies/**").hasRole("USER")
                 .anyRequest()
                 .authenticated()
                 .and()
@@ -36,7 +38,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
-        log.info("Password encoded {}", passwordEncoder.encode("test"));
+        log.info("Password encoded {}", passwordEncoder.encode("123"));
 
         auth.inMemoryAuthentication()
                 .withUser("julius2")
@@ -47,7 +49,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .password(passwordEncoder.encode("123"))
                 .roles("USER");
 
-        auth.userDetailsService(userDetailsService)
+        auth.userDetailsService(springUserDetailsService)
                 .passwordEncoder(passwordEncoder);
     }
 }

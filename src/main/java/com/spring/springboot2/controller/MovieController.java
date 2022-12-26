@@ -44,7 +44,6 @@ public class MovieController {
     }
 
     @GetMapping(path = "/by-id/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Movie> findByIdAuthenticationPrincipal(@PathVariable Long id,
                                                                  @AuthenticationPrincipal UserDetails userDetails) {
         log.info(userDetails);
@@ -57,12 +56,11 @@ public class MovieController {
     }
 
     @PostMapping
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Movie> save(@RequestBody @Valid MoviePostRequestBody movie) {
         return new ResponseEntity<>(movieService.save(movie), HttpStatus.CREATED);
     }
 
-    @DeleteMapping(path = "/{id}")
+    @DeleteMapping(path = "/admin/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         movieService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
