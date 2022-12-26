@@ -4,20 +4,17 @@ import com.spring.springboot2.domain.Movie;
 import com.spring.springboot2.requests.MoviePostRequestBody;
 import com.spring.springboot2.requests.MoviePutRequestBody;
 import com.spring.springboot2.service.MovieService;
-import com.spring.springboot2.util.DateUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springdoc.api.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
-
 import javax.validation.Valid;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -29,7 +26,7 @@ public class MovieController {
     private final MovieService movieService;
 
     @GetMapping
-    public ResponseEntity<Page<Movie>> list(Pageable pageable) {
+    public ResponseEntity<Page<Movie>> list(@ParameterObject Pageable pageable) {
         return ResponseEntity.ok(movieService.listAll(pageable));
     }
 
