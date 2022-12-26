@@ -7,9 +7,8 @@ import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.stream.Collectors;
@@ -19,14 +18,13 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 @Entity
 @Builder
-@Table(name = "spring_users")
 public class SpringUser implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "The user's name can't be empty or null")
+    @NotEmpty(message = "The user's name can't be empty or null")
     private String name;
 
     private String username;
